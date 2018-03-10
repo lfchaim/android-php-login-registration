@@ -52,12 +52,41 @@ class DB_Functions {
     }
 
     /**
+     * Update user
+     * returns user details
+     */
+    public function updateUser($name, $email, $new_password) {
+        $uuid = uniqid('', true);
+        $hash = $this->hashSSHA($new_password);
+        $encrypted_password = $hash["encrypted"]; // encrypted password
+
+        $salt = $hash["salt"]; // salt
+
+        $stmt = $this->conn->prepare("UPDATE users SET name = ?, encrypted_password = ?, salt = ?, updated_at = NOW() WHERE email = ? ");
+        $stmt->bind_param("ssss", $name, $encrypted_password, $salt, $email);
+        $result = $stmt->execute();
+        $stmt->close();
+
+        // check for successful store
+        if ($result) {
+            $stmt = $this->conn->prepare("SELECT * FROM users WHERE email = ?");
+            $stmt->bind_param("s", $email);
+            $stmt->execute();
+            $user = $stmt->get_result()->fetch_assoc();
+            $stmt->close();
+
+            return $user;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Get user by email and password
      */
     public function getUserByEmailAndPassword($email, $password) {
 
         $stmt = $this->conn->prepare("SELECT * FROM users WHERE email = ?");
-
         $stmt->bind_param("s", $email);
 
         if ($stmt->execute()) {

@@ -20,4 +20,15 @@ email: email@com.com
 password: passwd  
 
 Response:  
-{"error":false,"uid":"5aa3b9c8912447.06258238","user":{"id":1,"name":"Full Name","email":"email@com.com","created_at":"2018-03-10 07:56:08","updated_at":null}}
+{"error":false,"uid":"5aa3b9c8912447.06258238","user":{"id":1,"name":"Full Name","email":"email@com.com","created_at":"2018-03-10 07:56:08","updated_at":null}}  
+
+### Update  
+http://localhost/android-login-api/update.php  
+form-data  
+name: Full New Name  
+email: email@com.com  
+password: passwd  
+new_password: passnew 
+
+Response:  
+{"error":false,"uid":"5aa3b9c8912447.06258238","user":{"name":"Full New Name","email":"email@com.com","created_at":"2018-03-10 17:01:39","updated_at":"2018-03-10 17:08:50"}}  
